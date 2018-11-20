@@ -49,3 +49,20 @@ type Market struct {
 type Markets struct {
 	Markets []*Market `json:"markets"`
 }
+
+// Meta structure
+type Meta struct {
+	Page       int `json:"page"`
+	PerPage    int `json:"per_page"`
+	TotalCount int `json:"total_count"`
+}
+
+// Order structure
+type Order struct {
+}
+
+// Orders structure
+type Orders struct {
+	Meta   *Meta    `json:"meta"`
+	Orders []*Order `json:"orders"`
+}

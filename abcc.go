@@ -22,6 +22,7 @@ import (
 type Interface interface {
 	Timestamp(options *types.Options) (*types.Timestamp, error)
 	Markets(options *types.Options) (*types.Markets, error)
+	Orders(options *types.Options) (*types.Orders, error)
 	Me(options *types.Options) (*types.UserInfo, error)
 }
 
