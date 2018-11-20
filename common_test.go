@@ -11,3 +11,11 @@ func TestTimestamp(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestMarkets(t *testing.T) {
+	if info, err := GetInstance().Markets(nil); err != nil {
+		t.Fatal(err)
+	} else if info.Markets == nil || len(info.Markets) == 0 {
+		t.FailNow()
+	}
+}

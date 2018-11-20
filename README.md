@@ -13,4 +13,5 @@
 | Type        | Endpoint                        | Done |
 |-------------|---------------------------------|------|
 | Common      | /v1/common/timestamp            | ✔ |
+| Common      | /v1/common/markets              | ✔ |
 | Member      | /v1/members/me                  | - |

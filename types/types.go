@@ -33,3 +33,19 @@ type UserInfo struct {
 type Timestamp struct {
 	Timestamp float64 `json:"timestamp"`
 }
+
+// Market structure
+type Market struct {
+	ID          int    `json:"id"`
+	Code        string `json:"code"`
+	Name        string `json:"name"`
+	BaseUnit    string `json:"base_unit"`
+	QuoteUnit   string `json:"quote_unit"`
+	PriceFixed  int    `json:"price_fixed"`
+	VolumeFixed int    `json:"volume_fixed"`
+}
+
+// Markets structure
+type Markets struct {
+	Markets []*Market `json:"markets"`
+}
