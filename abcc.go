@@ -20,6 +20,7 @@ import (
 
 // Interface for APIs
 type Interface interface {
+	Timestamp(options *types.Options) (*types.Timestamp, error)
 	Me(options *types.Options) (*types.UserInfo, error)
 }
 
@@ -119,23 +120,4 @@ func (s *Client) getResponse(url string) ([]byte, error) {
 		return nil, fmt.Errorf("[%d] %s:%s", resp.Error.Code, resp.Error.Message, resp.Error.Reason)
 	}
 	return body, nil
-}
-
-// Me obtains your own personal asset information
-//   arg: -
-//   src: https://api.abcc.com/api/v1/members/me
-//   doc: -
-func (s *Client) Me(options *types.Options) (*types.UserInfo, error) {
-	url := fmt.Sprintf("%s/members/me?%s", baseURL, s.parseOptions("/api/v1/members/me", options))
-
-	body, err := s.getResponse(url)
-	if err != nil {
-		return nil, err
-	}
-
-	var result = new(types.UserInfo)
-	if err := json.Unmarshal(body, result); err != nil {
-		return nil, err
-	}
-	return result, nil
 }

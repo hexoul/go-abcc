@@ -28,3 +28,8 @@ type UserInfo struct {
 	Activated bool       `json:"activated"`
 	Accounts  []*Account `json:"accounts"`
 }
+
+// Timestamp structure
+type Timestamp struct {
+	Timestamp float64 `json:"timestamp"`
+}

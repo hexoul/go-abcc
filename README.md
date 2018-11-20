@@ -12,4 +12,5 @@
 ## Features
 | Type        | Endpoint                        | Done |
 |-------------|---------------------------------|------|
+| Common      | /v1/common/timestamp            | ✔ |
 | Member      | /v1/members/me                  | - |
