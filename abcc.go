@@ -2,7 +2,6 @@
 package abcc
 
 import (
-	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -38,7 +37,7 @@ var (
 )
 
 const (
-	baseURL = "https://api.abcc.com/v1"
+	baseURL = "https://api.abcc.com/api/v1"
 )
 
 func init() {
@@ -82,10 +81,11 @@ func GetInstanceWithKey(accessKey, secretKey string) *Client {
 	return instance
 }
 
-func (s *Client) parseOptions(endpoint string, options *types.Options) *types.Request {
+func (s *Client) parseOptions(endpoint string, options *types.Options) string {
 	// Make params
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
-	params := "accesskey=" + s.accessKey + "&tonce=" + timestamp
+	// NOTE: params should be sorted alphabetically
+	params := "access_key=" + s.accessKey + "&tonce=" + timestamp
 	if options == nil {
 		options = &types.Options{}
 	}
@@ -94,26 +94,16 @@ func (s *Client) parseOptions(endpoint string, options *types.Options) *types.Re
 	}
 
 	// Sign
-	msg := "POST" + endpoint + "?" + params
+	msg := "GET" + endpoint + "?" + params
 	h := hmac.New(sha256.New, []byte(s.secretKey))
 	h.Write([]byte(msg))
 	sign := hex.EncodeToString(h.Sum(nil))
 
-	// Make request
-	return &types.Request{
-		AccessKey: s.accessKey,
-		Timestamp: timestamp,
-		Params:    params,
-		Sign:      sign,
-	}
+	return params + "&signature=" + sign
 }
 
-func (s *Client) getResponse(url string, req *types.Request) ([]byte, error) {
-	reqBody, err := json.Marshal(req)
-	if err != nil {
-		return nil, err
-	}
-	httpReq, err := http.NewRequest("POST", url, bytes.NewBufferString(string(reqBody)))
+func (s *Client) getResponse(url string) ([]byte, error) {
+	httpReq, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,24 @@ func (s *Client) getResponse(url string, req *types.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	resp := new(types.Response)
+	if err := json.Unmarshal(body, &resp); err != nil {
+		return nil, err
+	}
+	if resp.Error != nil {
+		return nil, fmt.Errorf("[%d] %s:%s", resp.Error.Code, resp.Error.Message, resp.Error.Reason)
+	}
 	return body, nil
 }
 
 // Me obtains your own personal asset information
 //   arg: -
-//   src: https://api.abcc.com/v1/members/me
+//   src: https://api.abcc.com/api/v1/members/me
 //   doc: -
 func (s *Client) Me(options *types.Options) (*types.UserInfo, error) {
-	url := fmt.Sprintf("%s/members/me", baseURL)
+	url := fmt.Sprintf("%s/members/me?%s", baseURL, s.parseOptions("/api/v1/members/me", options))
 
-	body, err := s.getResponse(url, s.parseOptions("/api/v1/members/me", options))
+	body, err := s.getResponse(url)
 	if err != nil {
 		return nil, err
 	}

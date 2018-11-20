@@ -1,12 +1,16 @@
 // Package types of both request and response for API
 package types
 
-// Request structure
-type Request struct {
-	AccessKey string `json:"accesskey,omitempty"`
-	Timestamp string `json:"tonce,omitempty"`
-	Params    string `json:"params,omitempty"`
-	Sign      string `json:"signature,omitempty"`
+// Error structure
+type Error struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Reason  string `json:"reason"`
+}
+
+// Response structure
+type Response struct {
+	Error *Error `json:"error"`
 }
 
 // Account structure
