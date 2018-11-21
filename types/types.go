@@ -22,7 +22,7 @@ type Account struct {
 
 // UserInfo structure
 type UserInfo struct {
-	SN        int64      `json:"sn"`
+	SN        string     `json:"sn"`
 	Name      int64      `json:"name"`
 	Email     string     `json:"email"`
 	Activated bool       `json:"activated"`

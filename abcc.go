@@ -22,7 +22,9 @@ import (
 type Interface interface {
 	Timestamp(options *types.Options) (*types.Timestamp, error)
 	Markets(options *types.Options) (*types.Markets, error)
+
 	Orders(options *types.Options) (*types.Orders, error)
+
 	Me(options *types.Options) (*types.UserInfo, error)
 }
 
@@ -87,22 +89,33 @@ func GetInstanceWithKey(accessKey, secretKey string) *Client {
 func (s *Client) parseOptions(endpoint string, options *types.Options) string {
 	// Make params
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
-	// NOTE: params should be sorted alphabetically
-	params := "access_key=" + s.accessKey + "&tonce=" + timestamp
+	params := []string{}
 	if options == nil {
 		options = &types.Options{}
 	}
-	if options.Symbol != "" {
-		params = params + "&symbol=" + options.Symbol
+	options.AccessKey = s.accessKey
+	options.Timestamp = timestamp
+	if bOption, err := json.Marshal(options); err == nil {
+		mOption := new(map[string]interface{})
+		if err := json.Unmarshal(bOption, &mOption); err == nil {
+			for _, k := range types.OptionOrder {
+				if (*mOption)[k] != nil {
+					params = append(params, fmt.Sprintf("%s=%v", k, (*mOption)[k]))
+				}
+			}
+		}
 	}
+	options.AccessKey = ""
+	options.Timestamp = ""
+	sParams := strings.Join(params, "&")
 
 	// Sign
-	msg := "GET" + endpoint + "?" + params
+	msg := "GET|" + endpoint + "|" + sParams
 	h := hmac.New(sha256.New, []byte(s.secretKey))
 	h.Write([]byte(msg))
 	sign := hex.EncodeToString(h.Sum(nil))
 
-	return params + "&signature=" + sign
+	return sParams + "&signature=" + sign
 }
 
 func (s *Client) getResponse(url string) ([]byte, error) {

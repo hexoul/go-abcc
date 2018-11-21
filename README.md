@@ -14,5 +14,5 @@
 |-------------|---------------------------------|------|
 | Common      | /v1/common/timestamp            | ✔ |
 | Common      | /v1/common/markets              | ✔ |
-| Exchange    | /v1/exchange/orders             | - |
-| Member      | /v1/members/me                  | - |
+| Exchange    | /v1/exchange/orders             | ✔ |
+| Member      | /v1/members/me                  | ✔ |
