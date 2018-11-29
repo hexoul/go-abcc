@@ -78,3 +78,22 @@ type Orders struct {
 	Meta   *Meta    `json:"meta"`
 	Orders []*Order `json:"orders"`
 }
+
+// Trade structure
+type Trade struct {
+	ID         int64  `json:"id"`
+	OrderID    int64  `json:"order_id"`
+	CreatedAt  string `json:"created_at"`
+	MarketCode string `json:"market_code"`
+	Price      string `json:"price"`
+	Volume     string `json:"volume"`
+	Funds      string `json:"funds"`
+	Fee        string `json:"fee"`
+	Side       string `json:"side"`
+}
+
+// Trades structure
+type Trades struct {
+	Meta   *Meta    `json:"meta"`
+	Trades []*Trade `json:"trades"`
+}
