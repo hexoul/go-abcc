@@ -59,6 +59,18 @@ type Meta struct {
 
 // Order structure
 type Order struct {
+	ID              int64  `json:"id"`
+	CreatedAt       string `json:"created_at"`
+	MarketCode      string `json:"market_code"`
+	Side            string `json:"side"`
+	State           string `json:"state"`
+	OrdType         string `json:"ord_type"`
+	Price           string `json:"price"`
+	AvgPrice        string `json:"avg_price"`
+	Volume          string `json:"volume"`
+	RemainingVolume string `json:"remaining_volume"`
+	ExecutedVolume  string `json:"executed_volume"`
+	TradesCount     int    `json:"trades_count"`
 }
 
 // Orders structure
