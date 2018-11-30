@@ -27,7 +27,7 @@ func (s *Client) Me(options *types.Options) (*types.UserInfo, error) {
 }
 
 // Trades list you ordered
-//   arg: -
+//   arg: market_code, start_time, end_time, start_id, end_id, direction, page, per_page
 //   src: https://api.abcc.com/api/v1/members/trades
 //   doc: -
 func (s *Client) Trades(options *types.Options) (*types.Trades, error) {

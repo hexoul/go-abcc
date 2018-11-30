@@ -20,6 +20,7 @@ func TestMe(t *testing.T) {
 func TestTrades(t *testing.T) {
 	if ret, err := GetInstance().Trades(&types.Options{
 		MarketCode: "metaeth",
+		PerPage:    "100",
 	}); err != nil {
 		t.Fatal(err)
 	} else {
