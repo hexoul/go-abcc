@@ -12,7 +12,7 @@ import (
 //   src: https://api.abcc.com/api/v1/exchange/orders
 //   doc: -
 func (s *Client) Orders(options *types.Options) (*types.Orders, error) {
-	url := fmt.Sprintf("%s/exchange/orders?%s", baseURL, s.parseOptions("/api/v1/exchange/orders", options))
+	url := fmt.Sprintf("%s/exchange/orders?%s", baseURL, s.parseOptions("/api/v1/exchange/orders", s.fillTimestampFromServer(options)))
 
 	body, err := s.getResponse(url)
 	if err != nil {

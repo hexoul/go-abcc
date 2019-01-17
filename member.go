@@ -12,7 +12,7 @@ import (
 //   src: https://api.abcc.com/api/v1/members/me
 //   doc: -
 func (s *Client) Me(options *types.Options) (*types.UserInfo, error) {
-	url := fmt.Sprintf("%s/members/me?%s", baseURL, s.parseOptions("/api/v1/members/me", options))
+	url := fmt.Sprintf("%s/members/me?%s", baseURL, s.parseOptions("/api/v1/members/me", s.fillTimestampFromServer(options)))
 
 	body, err := s.getResponse(url)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *Client) Me(options *types.Options) (*types.UserInfo, error) {
 //   src: https://api.abcc.com/api/v1/members/trades
 //   doc: -
 func (s *Client) Trades(options *types.Options) (*types.Trades, error) {
-	url := fmt.Sprintf("%s/members/trades?%s", baseURL, s.parseOptions("/api/v1/members/trades", options))
+	url := fmt.Sprintf("%s/members/trades?%s", baseURL, s.parseOptions("/api/v1/members/trades", s.fillTimestampFromServer(options)))
 
 	body, err := s.getResponse(url)
 	if err != nil {

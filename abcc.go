@@ -86,15 +86,28 @@ func GetInstanceWithKey(accessKey, secretKey string) *Client {
 	return instance
 }
 
+func (s *Client) fillTimestampFromServer(options *types.Options) *types.Options {
+	timestamp, err := s.Timestamp(nil)
+	if err != nil {
+		return nil
+	}
+	if options == nil {
+		options = &types.Options{}
+	}
+	options.Timestamp = strconv.FormatFloat(timestamp.Timestamp, 'f', -1, 64)
+	return options
+}
+
 func (s *Client) parseOptions(endpoint string, options *types.Options) string {
 	// Make params
-	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	params := []string{}
 	if options == nil {
 		options = &types.Options{}
 	}
 	options.AccessKey = s.accessKey
-	options.Timestamp = timestamp
+	if options.Timestamp == "" {
+		options.Timestamp = strconv.FormatInt(time.Now().Unix(), 10)
+	}
 	if bOption, err := json.Marshal(options); err == nil {
 		mOption := new(map[string]interface{})
 		if err := json.Unmarshal(bOption, &mOption); err == nil {
